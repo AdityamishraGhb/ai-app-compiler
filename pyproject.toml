@@ -1,0 +1,56 @@
+[project]
+name = "ai-app-compiler"
+version = "0.1.0"
+description = "AI-powered application compiler that converts natural language into validated, executable application configurations."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [
+    {name = "Aditya Mishra"},
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Compilers",
+    "Typing :: Typed",
+]
+dependencies = [
+    "fastapi>=0.115.0",
+    "pydantic>=2.10.0",
+    "uvicorn>=0.34.0",
+    "google-generativeai>=0.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "httpx>=0.27.0",
+    "ruff>=0.8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/YOUR_USERNAME/ai-app-compiler"
+Repository = "https://github.com/YOUR_USERNAME/ai-app-compiler"
+Issues = "https://github.com/YOUR_USERNAME/ai-app-compiler/issues"
+
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["backend/tests"]
+asyncio_mode = "auto"
