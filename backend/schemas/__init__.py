@@ -17,7 +17,6 @@ Usage:
 # ── Enums ────────────────────────────────────────────
 from backend.schemas.enums import (  # noqa: F401
     APIParamType,
-    AppType,
     AuthStrategy,
     CRUDOperation,
     FeaturePriority,
@@ -125,7 +124,6 @@ from backend.schemas.pipeline import (  # noqa: F401
 __all__ = [
     # Enums
     "APIParamType",
-    "AppType",
     "AuthStrategy",
     "CRUDOperation",
     "FeaturePriority",

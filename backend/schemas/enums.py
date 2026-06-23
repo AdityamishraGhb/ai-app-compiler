@@ -13,19 +13,6 @@ from enum import Enum
 #  Stage 1 — Intent Extraction
 # ──────────────────────────────────────────────
 
-class AppType(str, Enum):
-    """Classification of the application being requested."""
-    WEB_APPLICATION = "web_application"
-    MOBILE_APPLICATION = "mobile_application"
-    API_SERVICE = "api_service"
-    DASHBOARD = "dashboard"
-    E_COMMERCE = "e_commerce"
-    CMS = "cms"
-    SOCIAL_PLATFORM = "social_platform"
-    MARKETPLACE = "marketplace"
-    SAAS_PLATFORM = "saas_platform"
-    INTERNAL_TOOL = "internal_tool"
-
 
 class FeaturePriority(str, Enum):
     """Priority level for a requested feature."""

@@ -47,7 +47,7 @@ Example JSON (StructuredIntent):
 from pydantic import Field
 
 from backend.schemas.common import StrictBaseModel
-from backend.schemas.enums import AppType, FeaturePriority
+from backend.schemas.enums import FeaturePriority
 
 
 # ──────────────────────────────────────────────
@@ -120,9 +120,11 @@ class StructuredIntent(StrictBaseModel):
         description="A concise, PascalCase name for the application (e.g., 'TaskFlow').",
         examples=["TaskFlow", "ShopHub", "DevBoard"],
     )
-    app_type: AppType = Field(
+    app_type: str = Field(
         ...,
-        description="The broad category of application being built.",
+        min_length=3,
+        max_length=100,
+        description="The category of application being built. Reduce generic classifications (like 'web_application' or 'dashboard'). Prefer domain-specific app types (like 'music_management_system' or 'healthcare_erp') when confidence is high. Use snake_case.",
     )
     description: str = Field(
         ...,
