@@ -42,6 +42,15 @@ class CompileResponse(BaseModel):
     repair_report: Optional[RepairReport] = None
     runtime_result: RuntimeResult
 
+@app.get("/")
+async def root():
+    return {
+        "name": "AI Application Compiler",
+        "status": "online",
+        "health": "/health",
+        "docs": "/docs"
+    }
+
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
