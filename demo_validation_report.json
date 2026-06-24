@@ -1,0 +1,57 @@
+{
+  "is_valid": false,
+  "total_issues": 6,
+  "error_count": 6,
+  "warning_count": 0,
+  "info_count": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "category": "referential",
+      "source": "DBTable[users].column[team_id].foreign_key",
+      "target": "DBTable[teams]",
+      "message": "Foreign key 'teams.id' references non-existent table 'teams'.",
+      "repair_hint": "Create a table named 'teams' or correct the foreign key reference in 'users'."
+    },
+    {
+      "severity": "error",
+      "category": "referential",
+      "source": "APIEndpoint[GET /users].response.entity",
+      "target": "DBTable[entity=UnknownEntity]",
+      "message": "API endpoint response references entity 'UnknownEntity' which does not exist in the Database Schema.",
+      "repair_hint": "Add a Database Schema table for entity 'UnknownEntity'."
+    },
+    {
+      "severity": "error",
+      "category": "referential",
+      "source": "UIPage[DashboardPage].Component[users_table].data_source",
+      "target": "APIEndpoint[GET /nothing]",
+      "message": "UI Component 'users_table' data_source 'GET /nothing' maps to a non-existent API endpoint.",
+      "repair_hint": "Create API endpoint 'GET /nothing' or correct the UI component's data_source."
+    },
+    {
+      "severity": "error",
+      "category": "logical",
+      "source": "AuthSchema.Role[superadmin]",
+      "target": "ArchitectureBlueprint.roles",
+      "message": "Auth Schema defined a role 'superadmin' that does not exist in the Architecture Blueprint.",
+      "repair_hint": "Remove the role 'superadmin' from AuthSchema."
+    },
+    {
+      "severity": "error",
+      "category": "referential",
+      "source": "AuthSchema.credentials.identifier_field",
+      "target": "DBTable[users].columns[username_missing]",
+      "message": "Auth identifier field 'username_missing' is not a column in the user table 'users'.",
+      "repair_hint": "Add column 'username_missing' to DB table 'users'."
+    },
+    {
+      "severity": "error",
+      "category": "referential",
+      "source": "AuthSchema.credentials.secret_field",
+      "target": "DBTable[users].columns[password_missing]",
+      "message": "Auth secret field 'password_missing' is not a column in the user table 'users'.",
+      "repair_hint": "Add column 'password_missing' to DB table 'users'."
+    }
+  ]
+}

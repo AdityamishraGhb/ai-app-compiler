@@ -91,7 +91,6 @@ from backend.schemas.schema_bundle import (  # noqa: F401
 
 # ── Stage 4: Validation ─────────────────────────────
 from backend.schemas.validation import (  # noqa: F401
-    IssueLocation,
     ValidationIssue,
     ValidationReport,
 )
@@ -184,7 +183,6 @@ __all__ = [
     # Stage 3 — Bundle
     "SchemaBundle",
     # Stage 4
-    "IssueLocation",
     "ValidationIssue",
     "ValidationReport",
     # Stage 5

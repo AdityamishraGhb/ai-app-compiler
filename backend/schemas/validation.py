@@ -60,83 +60,33 @@ from backend.schemas.enums import (
 #  Sub-models
 # ──────────────────────────────────────────────
 
-class IssueLocation(StrictBaseModel):
-    """Pinpoints where a validation issue was found within the SchemaBundle."""
-
-    schema_layer: SchemaLayerName = Field(
-        ...,
-        description="Which schema layer contains the issue (ui, api, database, auth).",
-    )
-    path: str = Field(
-        ...,
-        min_length=1,
-        description=(
-            "JSON-path-like location within the schema layer "
-            "(e.g., 'endpoints[3].request_body.fields', 'tables[2].columns[5]')."
-        ),
-        examples=["endpoints[3].request_body.fields", "pages[0].components[0].columns[4]"],
-    )
-    field: str | None = Field(
-        None,
-        description="Specific field name at the path location, if applicable.",
-    )
-    context: str = Field(
-        "",
-        max_length=200,
-        description="Human-readable context (e.g., 'PUT /tasks/{id}', 'TaskBoard → task_list').",
-    )
-
-
 class ValidationIssue(StrictBaseModel):
     """
     A single validation issue found in the SchemaBundle.
-
-    Issues are identified by a unique `id` (e.g., 'val-001') that the
-    Repair Engine references when reporting fixes.
     """
-
-    id: str = Field(
-        ...,
-        min_length=1,
-        max_length=20,
-        description="Unique issue identifier (e.g., 'val-001'). Referenced by RepairAction.issue_id.",
-        examples=["val-001", "val-012"],
-    )
     severity: ValidationSeverity = Field(
         ...,
         description="Issue severity. 'error' blocks runtime; 'warning' is advisory.",
     )
     category: ValidationCategory = Field(
         ...,
-        description=(
-            "Issue category: "
-            "'structural' = malformed JSON / missing required fields; "
-            "'referential' = broken cross-layer references; "
-            "'logical' = business logic inconsistency."
-        ),
+        description="Issue category (e.g. 'referential', 'logical').",
     )
-    location: IssueLocation = Field(
+    source: str = Field(
         ...,
-        description="Where in the SchemaBundle the issue was found.",
+        description="The source of the reference (e.g., 'APIEndpoint[GET /users].response.entity').",
+    )
+    target: str = Field(
+        ...,
+        description="The expected target that is missing or mismatched (e.g., 'DBTable[User]').",
     )
     message: str = Field(
         ...,
-        min_length=1,
-        max_length=500,
         description="Human-readable description of the issue.",
     )
-    suggestion: str = Field(
+    repair_hint: str = Field(
         "",
-        max_length=500,
-        description="Suggested fix for the issue.",
-    )
-    auto_fixable: bool = Field(
-        False,
-        description=(
-            "Whether the Repair Engine can fix this issue automatically "
-            "(deterministically or via LLM). Non-auto-fixable issues require "
-            "user intervention."
-        ),
+        description="Actionable hint for the RepairEngine to fix the issue.",
     )
 
 
