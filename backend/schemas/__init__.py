@@ -103,12 +103,7 @@ from backend.schemas.repair import (  # noqa: F401
 
 # ── Stage 6: Runtime Simulation ─────────────────────
 from backend.schemas.runtime import (  # noqa: F401
-    DatabaseInfo,
-    RuntimeError_,
     RuntimeResult,
-    SampleQueryResult,
-    SeedDataResult,
-    TableCreationResult,
 )
 
 # ── Pipeline ─────────────────────────────────────────
@@ -189,12 +184,7 @@ __all__ = [
     "RepairAction",
     "RepairReport",
     # Stage 6
-    "DatabaseInfo",
-    "RuntimeError_",
     "RuntimeResult",
-    "SampleQueryResult",
-    "SeedDataResult",
-    "TableCreationResult",
     # Pipeline
     "PipelineMetadata",
     "PipelineOptions",

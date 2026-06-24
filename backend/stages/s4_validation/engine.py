@@ -30,6 +30,9 @@ class ValidationEngine:
         issues.extend(self._check_ui_to_api(bundle))
         issues.extend(self._check_auth(bundle, blueprint))
         
+        for i, issue in enumerate(issues, 1):
+            issue.id = f"val-{i}"
+            
         errors = sum(1 for i in issues if i.severity == ValidationSeverity.ERROR)
         warnings = sum(1 for i in issues if i.severity == ValidationSeverity.WARNING)
         infos = sum(1 for i in issues if i.severity == ValidationSeverity.INFO)

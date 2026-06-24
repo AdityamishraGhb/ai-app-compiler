@@ -60,51 +60,31 @@ if TYPE_CHECKING:
 
 class RepairAction(StrictBaseModel):
     """
-    A single repair action applied to fix a ValidationIssue.
-
-    Each action records the before/after state for auditability.
+    Record of a single attempted repair action during Stage 5.
     """
-
     issue_id: str = Field(
         ...,
-        min_length=1,
-        description="ID of the ValidationIssue this action addresses (e.g., 'val-001').",
-        examples=["val-001", "val-012"],
+        description="The ValidationIssue.id that prompted this repair attempt.",
     )
-    action_type: RepairActionType = Field(
+    component_modified: str = Field(
         ...,
-        description="Type of modification made.",
+        description="The component or schema layer that was modified (e.g. 'DatabaseSchema', 'APISchema').",
     )
-    strategy: RepairStrategy = Field(
+    strategy_used: str = Field(
         ...,
-        description=(
-            "'deterministic' for rule-based fixes (missing defaults, type coercion); "
-            "'llm_assisted' for semantic repairs requiring context understanding."
-        ),
+        description="The strategy used (e.g., 'LLM_REGENERATION', 'DETERMINISTIC_FIX').",
     )
-    schema_layer: SchemaLayerName = Field(
+    success: bool = Field(
         ...,
-        description="Which schema layer was modified.",
+        description="Whether the issue was successfully fixed.",
     )
-    location: str = Field(
-        ...,
-        min_length=1,
-        description="JSON-path-like location of the modification.",
-        examples=["endpoints[3].request_body.fields", "tables[2].columns"],
-    )
-    before_value: str | None = Field(
+    before_hash: str | None = Field(
         None,
-        description="JSON-serialized value before repair. None for additions.",
+        description="Hash of the schema state before the repair.",
     )
-    after_value: str | None = Field(
+    after_hash: str | None = Field(
         None,
-        description="JSON-serialized value after repair. None for deletions.",
-    )
-    detail: str = Field(
-        ...,
-        min_length=1,
-        max_length=500,
-        description="Human-readable explanation of what was changed and why.",
+        description="Hash of the schema state after the repair.",
     )
 
 
@@ -114,51 +94,25 @@ class RepairAction(StrictBaseModel):
 
 class RepairReport(StrictBaseModel):
     """
-    **Stage 5 Output** — Report of all repairs applied to the SchemaBundle.
-
-    Produced by: `s5_repair/engine.py`
-    Consumed by: `s4_validation/engine.py` (re-validation loop) or `s6_runtime/simulator.py`
-
-    If `issues_remaining > 0`, the orchestrator may send the repaired bundle
-    back to Stage 4 for re-validation (up to max_repair_iterations).
+    Summary of all repairs executed during Stage 5.
     """
-
-    repair_iteration: int = Field(
-        ...,
-        ge=1,
-        description="Which iteration of the repair loop this report represents (1-indexed).",
-    )
     issues_received: int = Field(
         ...,
-        ge=0,
-        description="Number of issues passed to the repair engine for this iteration.",
+        description="Number of issues passed into the Repair Engine.",
     )
     issues_fixed: int = Field(
         ...,
-        ge=0,
-        description="Number of issues successfully fixed in this iteration.",
+        description="Number of issues successfully resolved.",
     )
     issues_remaining: int = Field(
         ...,
-        ge=0,
-        description="Number of issues that could not be fixed (remaining for next iteration or user).",
+        description="Number of issues that could not be resolved.",
     )
-    actions: list[RepairAction] = Field(
-        default_factory=list,
-        description="All repair actions applied in this iteration.",
-    )
-    remaining_issues: list[ValidationIssue] = Field(
-        default_factory=list,
-        description="Issues that could not be repaired. Forwarded to next iteration or flagged to user.",
-    )
-
-    # NOTE: `repaired_schema_bundle` is typed as Any here to avoid a circular
-    # import.  At runtime the orchestrator passes the actual SchemaBundle.
-    # We use model_rebuild() in __init__.py to resolve the forward reference.
-    repaired_schema_bundle: dict = Field(
+    repair_success_rate: float = Field(
         ...,
-        description=(
-            "The patched SchemaBundle as a dict. The orchestrator deserializes "
-            "this back into a SchemaBundle for re-validation or runtime."
-        ),
+        description="Percentage of issues successfully fixed (0.0 to 100.0).",
+    )
+    repair_actions: list[RepairAction] = Field(
+        default_factory=list,
+        description="Detailed log of all repair attempts.",
     )

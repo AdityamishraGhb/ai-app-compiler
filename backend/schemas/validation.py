@@ -64,6 +64,10 @@ class ValidationIssue(StrictBaseModel):
     """
     A single validation issue found in the SchemaBundle.
     """
+    id: str = Field(
+        "",
+        description="Unique identifier for the issue (e.g., 'val-1').",
+    )
     severity: ValidationSeverity = Field(
         ...,
         description="Issue severity. 'error' blocks runtime; 'warning' is advisory.",
