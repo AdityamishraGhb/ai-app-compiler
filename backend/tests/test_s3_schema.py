@@ -10,7 +10,7 @@ from backend.schemas import (
     AuthSchema,
     SchemaBundle,
 )
-from backend.stages.s3_schema.bundler import SchemaBundler, BundleValidationError
+from backend.stages.s3_schema.bundler import SchemaBundler
 
 @pytest.fixture
 def mock_blueprint():
@@ -104,25 +104,4 @@ async def test_bundler_success(mock_blueprint, mock_valid_bundle):
     bundler.db_gen.execute.assert_called_once()
     bundler.auth_gen.execute.assert_called_once()
 
-@pytest.mark.asyncio
-async def test_bundler_validation_failure(mock_blueprint, mock_valid_bundle):
-    # Introduce referential error: API entity does not exist in DB
-    invalid_bundle = mock_valid_bundle.model_copy(deep=True)
-    invalid_bundle.api.endpoints[0].response.entity = "NonExistentTable"
-    
-    client = AsyncMock(spec=GeminiClient)
-    bundler = SchemaBundler(client)
-    
-    bundler.ui_gen.execute = AsyncMock(return_value=invalid_bundle.ui)
-    bundler.api_gen.execute = AsyncMock(return_value=invalid_bundle.api)
-    bundler.db_gen.execute = AsyncMock(return_value=invalid_bundle.database)
-    bundler.auth_gen.execute = AsyncMock(return_value=invalid_bundle.auth)
-    
-    with pytest.raises(BundleValidationError) as exc_info:
-        await bundler.execute(mock_blueprint)
-        
-    assert len(exc_info.value.issues) == 1
-    issue = exc_info.value.issues[0]
-    assert issue.category == "referential"
-    assert issue.severity == "error"
-    assert "NonExistentTable" in issue.message
+

@@ -6,6 +6,7 @@
   "info_count": 0,
   "issues": [
     {
+      "id": "val-1",
       "severity": "error",
       "category": "referential",
       "source": "DBTable[users].column[team_id].foreign_key",
@@ -14,6 +15,7 @@
       "repair_hint": "Create a table named 'teams' or correct the foreign key reference in 'users'."
     },
     {
+      "id": "val-2",
       "severity": "error",
       "category": "referential",
       "source": "APIEndpoint[GET /users].response.entity",
@@ -22,6 +24,7 @@
       "repair_hint": "Add a Database Schema table for entity 'UnknownEntity'."
     },
     {
+      "id": "val-3",
       "severity": "error",
       "category": "referential",
       "source": "UIPage[DashboardPage].Component[users_table].data_source",
@@ -30,6 +33,7 @@
       "repair_hint": "Create API endpoint 'GET /nothing' or correct the UI component's data_source."
     },
     {
+      "id": "val-4",
       "severity": "error",
       "category": "logical",
       "source": "AuthSchema.Role[superadmin]",
@@ -38,6 +42,7 @@
       "repair_hint": "Remove the role 'superadmin' from AuthSchema."
     },
     {
+      "id": "val-5",
       "severity": "error",
       "category": "referential",
       "source": "AuthSchema.credentials.identifier_field",
@@ -46,6 +51,7 @@
       "repair_hint": "Add column 'username_missing' to DB table 'users'."
     },
     {
+      "id": "val-6",
       "severity": "error",
       "category": "referential",
       "source": "AuthSchema.credentials.secret_field",

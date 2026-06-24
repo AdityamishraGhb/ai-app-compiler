@@ -9,48 +9,48 @@
       "component_modified": "DatabaseSchema",
       "strategy_used": "LLM_REGENERATION",
       "success": true,
-      "before_hash": "1922232746967625857",
-      "after_hash": "3051763567374422772"
+      "before_hash": "-3553239738385728221",
+      "after_hash": "-5004260157944965844"
     },
     {
       "issue_id": "val-2",
       "component_modified": "APISchema",
       "strategy_used": "LLM_REGENERATION",
       "success": true,
-      "before_hash": "-995053194566040557",
-      "after_hash": "8036181035046304554"
+      "before_hash": "1565169853460562782",
+      "after_hash": "5550500237652980894"
     },
     {
       "issue_id": "val-3",
       "component_modified": "UISchema",
       "strategy_used": "LLM_REGENERATION",
       "success": true,
-      "before_hash": "830649848275376633",
-      "after_hash": "2871040992695812618"
+      "before_hash": "-3399122159546625802",
+      "after_hash": "-646707039473661725"
     },
     {
       "issue_id": "val-4",
       "component_modified": "AuthSchema",
       "strategy_used": "LLM_REGENERATION",
       "success": true,
-      "before_hash": "-8397586355597340419",
-      "after_hash": "8359404184665238679"
+      "before_hash": "5436165915031835326",
+      "after_hash": "1446004864308369114"
     },
     {
       "issue_id": "val-5",
       "component_modified": "AuthSchema",
       "strategy_used": "LLM_REGENERATION",
       "success": false,
-      "before_hash": "-8397586355597340419",
-      "after_hash": "8359404184665238679"
+      "before_hash": "5436165915031835326",
+      "after_hash": "1446004864308369114"
     },
     {
       "issue_id": "val-6",
       "component_modified": "AuthSchema",
       "strategy_used": "LLM_REGENERATION",
       "success": false,
-      "before_hash": "-8397586355597340419",
-      "after_hash": "8359404184665238679"
+      "before_hash": "5436165915031835326",
+      "after_hash": "1446004864308369114"
     }
   ]
 }

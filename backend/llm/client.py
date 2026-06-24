@@ -48,19 +48,21 @@ def async_retry(max_retries: int = 3, base_delay: float = 1.0, max_delay: float 
     return decorator
 
 
+import os
+
 class GeminiClient:
     """Client for interacting with the Google Gemini API."""
 
-    def __init__(self, api_key: str, model_name: str = "gemini-2.0-flash"):
+    def __init__(self, api_key: str, model_name: str = None):
         """
         Initialize the Gemini client.
         
         Args:
             api_key: The Google Gemini API key.
-            model_name: The name of the model to use.
+            model_name: The name of the model to use. Defaults to GEMINI_MODEL env var or gemini-2.5-flash.
         """
         genai.configure(api_key=api_key)
-        self.model_name = model_name
+        self.model_name = model_name or os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
         self.model = genai.GenerativeModel(self.model_name)
 
     @async_retry(max_retries=3, base_delay=2.0)
