@@ -123,12 +123,38 @@ class GeminiClient:
             return response_model.model_validate_json(response_text)
             
         except ValidationError as e:
-            logger.error(f"Pydantic validation failed: {e}")
-            logger.debug(f"Raw LLM output: {response.text}")
-            
             # Pydantic v2 throws ValidationError with 'json_invalid' type for bad JSON strings
             errors = e.errors()
             if errors and errors[0].get("type") == "json_invalid":
                 raise LLMValidationError(f"LLM did not return valid JSON: {e}") from e
                 
+            # Deterministic Pre-Validation Repair for UISchema
+            if response_model.__name__ == "UISchema":
+                try:
+                    data = json.loads(response_text)
+                    repaired = False
+                    for page in data.get("pages", []):
+                        for comp in page.get("components", []):
+                            actions = comp.get("actions")
+                            if isinstance(actions, list):
+                                new_actions = []
+                                for action in actions:
+                                    if isinstance(action, dict) and "label" in action:
+                                        new_actions.append(str(action["label"]))
+                                        repaired = True
+                                    elif isinstance(action, dict):
+                                        # Fallback to stringifying the dict if no label
+                                        new_actions.append(str(action))
+                                        repaired = True
+                                    else:
+                                        new_actions.append(action)
+                                comp["actions"] = new_actions
+                    if repaired:
+                        logger.info("Auto-repaired UISchema actions dictionary mismatch.")
+                        return response_model.model_validate(data)
+                except Exception as repair_err:
+                    logger.debug(f"Deterministic repair failed: {repair_err}")
+            
+            logger.error(f"Pydantic validation failed: {e}")
+            logger.debug(f"Raw LLM output: {response_text}")
             raise LLMValidationError(f"Failed to validate LLM output against {response_model.__name__}: {e}") from e

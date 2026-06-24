@@ -91,6 +91,8 @@ Example JSON (ArchitectureBlueprint):
 ```
 """
 
+from typing import Any
+
 from pydantic import Field
 
 from backend.schemas.common import StrictBaseModel
@@ -145,6 +147,10 @@ class EntityAttribute(StrictBaseModel):
         "",
         max_length=300,
         description="Human-readable explanation of this attribute's purpose.",
+    )
+    default: Any | None = Field(
+        None,
+        description="Default value for the attribute, if any.",
     )
 
 

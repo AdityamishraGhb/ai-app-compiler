@@ -95,3 +95,5 @@ async def compile_app(req: CompileRequest):
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
+
+

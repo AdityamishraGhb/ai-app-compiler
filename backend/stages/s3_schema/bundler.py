@@ -34,12 +34,10 @@ class SchemaBundler:
         logger.info("Executing Stage 3: Schema Bundle Generation (Parallel)")
 
         # Run all 4 generators concurrently
-        ui_schema, api_schema, db_schema, auth_schema = await asyncio.gather(
-            self.ui_gen.execute(blueprint),
-            self.api_gen.execute(blueprint),
-            self.db_gen.execute(blueprint),
-            self.auth_gen.execute(blueprint),
-        )
+        ui_schema = await self.ui_gen.execute(blueprint)
+        api_schema = await self.api_gen.execute(blueprint)
+        db_schema = await self.db_gen.execute(blueprint)
+        auth_schema = await self.auth_gen.execute(blueprint)
 
         bundle = SchemaBundle(
             ui=ui_schema,
